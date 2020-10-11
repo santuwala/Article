@@ -11,9 +11,6 @@ class ArticleViewModel :ViewModel() {
     var repository: Repository?= null
 
     fun init(pageNum: Int) {
-        if (mutableLiveData != null) {
-            return
-        }
         repository = Repository.instance
         mutableLiveData = repository!!.getArticles(pageNum,10)
     }

@@ -35,6 +35,7 @@ class Repository {
         Log.i("Repository", "getArticles: page: "+pageNum+" ,limit: "+limit);
         apiInterface.getArticlesList(pageNum, limit)!!.enqueue(object: Callback<ArrayList<ArticlePojo>> {
             override fun onResponse(call: Call<ArrayList<ArticlePojo>>, response: Response<ArrayList<ArticlePojo>>) {
+                Log.d("Repository", "getArticles: call: "+call.request().url());
                 if (response.isSuccessful) {
                     articles.setValue(response.body())
                 }

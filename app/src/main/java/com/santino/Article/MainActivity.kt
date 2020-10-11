@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     var adapter: ArticlesAdapter ?= null
     var rvArticle: RecyclerView ?= null
     var viewModel: ArticleViewModel ? = null
-    var count:Int = 1
+    var count:Int = 0
     var currentFirstVisible: Int = 0
     var currentPosition: Int = 0
 
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         rvArticle = findViewById(R.id.rvArticle)
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+
         callAPI()
         setupRecyclerView()
     }
