@@ -14,24 +14,40 @@ import com.santino.Article.R
 import com.santino.Article.model.ArticlePojo
 import de.hdodenhof.circleimageview.CircleImageView
 
+/**
+ * This class represents the Adapter class using this Recycler View's data will get reflect.
+ * @author Shubham
+ * @since 11-Oct-20202
+ */
 class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticlePojo>) :
     RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder>() {
 
     var likesCount: String? = null
     var commentsCount: String? = null
+
+    /**
+     * This method is an overrided function used to inflate views.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         var view = LayoutInflater.from(context).inflate(R.layout.adapter_article_item, parent, false)
         return ArticleViewHolder(view)
     }
 
+    /**
+     * This method is an overrided function used to get the list count.
+     * @return actual size of a list.
+     */
     override fun getItemCount(): Int {
         return articlesList.size
     }
 
+    /**
+     * This is an overrided function which handles UI.
+     * @param holder, View holder instance.
+     * @param position, Contains the actual List positions.
+     */
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         try {
-            Log.d("Adapter", "value: "+articlesList.size+" , user:" + articlesList[position].user!!.size+ " , media: "+ articlesList[position].media!!.size+
-            " ,position: "+position)
             holder.tv_UserName.text = articlesList[position].user!![0].name
             holder.tv_Description.text = articlesList[position].user!![0].designation
             holder.tv_articleContent.text = articlesList[position].content
@@ -61,7 +77,9 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
     }
 
     /**
-     * This method is used for setting the Image using Glide.
+     * This method is used for setting the Image in Image View using Glide.
+     * @param View : contains the Actual ImageView.
+     * @param url: contains the actual URL.
      */
     private fun setGlideImage(view: ImageView, url: String?) {
         Glide.with(context)
@@ -73,6 +91,9 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
             .into(view)
     }
 
+    /**
+     * This is an inner class for handling Views.
+     */
     inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var iv_user: CircleImageView
         var tv_UserName: TextView

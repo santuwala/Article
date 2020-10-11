@@ -22,6 +22,8 @@ import java.lang.Exception
 /**
  *
  * This class is used for showing the Dashboard screen.
+ * @author Shubham
+ * @since 11-Oct-20202
  */
 class MainActivity : AppCompatActivity() {
     var articleList:ArrayList<ArticlePojo> = ArrayList<ArticlePojo>()
@@ -97,6 +99,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * This method is used to check that Internet is currently available or not.
+     * @return Boolean value ->  True- Internet connected and False- Internet not connected.
      */
     fun isNetworkAvailable() : Boolean {
         try {
