@@ -9,5 +9,5 @@ import java.util.ArrayList
 interface APIInterface {
     @GET("/jet2/api/v1/blogs")
     fun getArticlesList(@Query("page") pageNo: Int,
-                    @Query("limit") limit: Int) : Call<ArrayList<ArticlePojo>>
+                        @Query("limit") limit: Int) : Call<ArrayList<ArticlePojo>>
 }

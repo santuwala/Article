@@ -1,6 +1,7 @@
 package com.santino.Article.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,9 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        if(articlesList.size > position) {
+        try {
+            Log.d("Adapter", "value: "+articlesList.size+" , user:" + articlesList[position].user!!.size+ " , media: "+ articlesList[position].media!!.size+
+            " ,position: "+position)
             holder.tv_UserName.text = articlesList[position].user!![0].name
             holder.tv_Description.text = articlesList[position].user!![0].designation
             holder.tv_articleContent.text = articlesList[position].content
@@ -52,6 +55,8 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
                 setGlideImage(holder.iv_article, articlesList[position].media!![0].image)
             else
                 holder.iv_article.visibility = View.GONE
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

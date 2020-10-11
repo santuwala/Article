@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     var rvArticle: RecyclerView ?= null
     var viewModel: ArticleViewModel ? = null
     var count:Int = 1
+    var currentFirstVisible: Int = 0
+    var currentPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +62,13 @@ class MainActivity : AppCompatActivity() {
         firstVisibleInListview[0] = linearLayoutManager.findFirstVisibleItemPosition()
         rvArticle!!.setOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val currentFirstVisible = linearLayoutManager.findFirstVisibleItemPosition()
+                currentFirstVisible = linearLayoutManager.findFirstVisibleItemPosition()
                 if (currentFirstVisible > firstVisibleInListview[0])
                     Log.i("RecyclerView scrolled: ", "scroll up!")
                 else {
-                    if (currentFirstVisible == 7) {
+                    if (currentFirstVisible == currentPosition + 7) {
+                        Log.i("MainActivity", " recyclerView: "+currentFirstVisible +" ,firstVisible: " +firstVisibleInListview[0]+ ", pos: "+currentPosition)
+                        currentPosition = currentFirstVisible
                         callAPI()
                     }
                 }
@@ -80,8 +84,9 @@ class MainActivity : AppCompatActivity() {
         if (isNetworkAvailable()) {
             viewModel!!.init(++count)
             viewModel!!.getRepository()!!
-                .observe(this, Observer { newsResponse: java.util.ArrayList<ArticlePojo> ->
-                    articleList.addAll(newsResponse)
+                .observe(this, Observer { response: java.util.ArrayList<ArticlePojo> ->
+                    Log.i("RecyclerView scrolled: ", "scroll up! API Call :"+articleList.size+ " , "+response.size + ", count: "+ count)
+                    articleList.addAll(response)
                     adapter!!.notifyDataSetChanged()
                 })
         } else {
