@@ -1,6 +1,5 @@
 package com.santino.Article.networking
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.santino.Article.model.ArticlePojo
 import com.santino.Article.networking.APIClient.createService

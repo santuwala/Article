@@ -48,12 +48,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tvTime"
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:layout_margin="5sp"
-            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="1h"
             android:layout_alignParentRight="true"

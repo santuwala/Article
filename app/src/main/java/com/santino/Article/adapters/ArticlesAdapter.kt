@@ -1,7 +1,6 @@
 package com.santino.Article.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.santino.Article.R
 import com.santino.Article.model.ArticlePojo
 import de.hdodenhof.circleimageview.CircleImageView
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * This class represents the Adapter class using this Recycler View's data will get reflect.
@@ -48,11 +51,27 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
      */
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         try {
-            holder.tv_UserName.text = articlesList[position].user!![0].name
-            holder.tv_Description.text = articlesList[position].user!![0].designation
+            holder.tv_time.text = dateConvert(articlesList[position].createdAt) + " hr"
+            for (UserPojo in articlesList[position].user!!) {
+                holder.tv_UserName.text = UserPojo.name
+                holder.tv_Description.text = UserPojo.designation
+                setGlideImage(holder.iv_user, UserPojo.avatar)
+            }
+            for (MediaPojo in articlesList[position].media!!) {
+                holder.tv_articleTitle.text = MediaPojo.title
+                holder.tv_articleUrl.text = MediaPojo.url
+                if (MediaPojo.image != null && MediaPojo.image != "")
+                    setGlideImage(holder.iv_article, articlesList[position].media!![0].image)
+                else
+                    holder.iv_article.visibility = View.GONE
+            }
+            if (articlesList[position].media!!.size == 0) {
+                holder.iv_article.visibility = View.GONE
+                holder.tv_articleTitle.visibility = View.GONE
+                holder.tv_articleUrl.visibility = View.GONE
+            }
+
             holder.tv_articleContent.text = articlesList[position].content
-            holder.tv_articleTitle.text = articlesList[position].media!![0].title
-            holder.tv_articleUrl.text = articlesList[position].media!![0].url
             likesCount = if (articlesList[position].likes!!.toInt() < 1000)
                 articlesList[position].likes
             else {
@@ -65,15 +84,23 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
             }
             holder.tv_like.text = likesCount + " " + context.getString(R.string.likes)
             holder.tv_comment.text = commentsCount + " " + context.getString(R.string.comments)
-            setGlideImage(holder.iv_user, articlesList[position].user!![0].avatar)
-
-            if (articlesList[position].media!![0].image != null && articlesList[position].media!![0].image != "")
-                setGlideImage(holder.iv_article, articlesList[position].media!![0].image)
-            else
-                holder.iv_article.visibility = View.GONE
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    /**
+     * This method is used for converting date into hour format
+     * @param time, actual date-time format.
+     * @return It returns the actual hour.
+     */
+    fun dateConvert(time: String?) : String {
+        var dateFormat : DateFormat
+        dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+        var date: Date = dateFormat.parse(time)
+        var formatter: DateFormat = SimpleDateFormat("HH")
+        var hour:String = formatter.format(date)
+        return hour
     }
 
     /**
@@ -95,6 +122,7 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
      * This is an inner class for handling Views.
      */
     inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var tv_time: TextView
         var iv_user: CircleImageView
         var tv_UserName: TextView
         var tv_Description: TextView
@@ -106,6 +134,7 @@ class ArticlesAdapter(var context: Context, var articlesList: ArrayList<ArticleP
         var tv_comment: TextView
 
         init {
+            tv_time = itemView.findViewById(R.id.tv_time)
             iv_user = itemView.findViewById(R.id.iv_user)
             tv_UserName = itemView.findViewById(R.id.tv_userName)
             tv_Description = itemView.findViewById(R.id.tv_description)
